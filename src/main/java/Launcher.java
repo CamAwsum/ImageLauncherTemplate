@@ -1,5 +1,6 @@
 import processing.core.PApplet;
 import controlP5.*;
+import processing.core.PImage;
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
@@ -25,6 +26,7 @@ public class Launcher extends PApplet {
                                                  launchBang,urlBang};
 
     String clipUrl;
+    PImage displayImage = null;
 
     public void setup() {
         colorMode(HSB,360,100,100,100);
@@ -55,17 +57,25 @@ public class Launcher extends PApplet {
                 .setLabel("Launch")
                 .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,50));
     }
-    public void controlEvent(CallbackEvent call) {
+    /*public void controlEvent(CallbackEvent call) {
         if (call.getController().equals(urlText)) {
 
         }
-    }
+    }*/
+
     public void draw() {
         background(color(0,0,95));
         syncVars();
         fill(0);
         ellipse(mouseX,mouseY,50,50);
+        if(displayImage != null) image(displayImage,0,0,100,100);
+        if(!urlText.isUserInteraction()) urlText.setUserInteraction(true);
     }
+
+    public void loadSelUrl() {
+        displayImage = loadImage(urlText.getText());
+    }
+
     public void syncVars() {
         if (widthText.getText().length() > 4) {
             widthText.setText(widthText.getText().substring(0,4));
@@ -82,6 +92,7 @@ public class Launcher extends PApplet {
             println("Pasting from clipboard.");
             clipUrl = getClipBoard();
             urlText.setText(clipUrl);
+            urlText.setUserInteraction(false);
         }
     }
     public String getClipBoard(){

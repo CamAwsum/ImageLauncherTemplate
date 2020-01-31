@@ -7,11 +7,12 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
-public class Launcher extends PApplet {
+public class LauncherClass extends PApplet {
     public static PApplet launcherSketch;
 
+    public static int frameWidth = 100, frameHeight = 100;
     public static void main(String [] args) {
-        PApplet.main("Launcher", args);
+        PApplet.main("LauncherClass", args);
     }
     public void settings() {
         launcherSketch = this;
@@ -36,26 +37,28 @@ public class Launcher extends PApplet {
                 .setPosition(25,25)
                 .setSize(50, 25)
                 .setInputFilter(1)
-                .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,50));
+                .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,0));
         heightText = cp5.addTextfield("Height")
                 .setPosition(100,25)
                 .setSize(50, 25)
                 .setInputFilter(1)
-                .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,50));
+                .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,0));
         urlText = cp5.addTextfield("Url")
                 .setPosition(25,height-50)
                 .setSize(650, 25)
-                .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,50));
+                .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,0));
         urlBang = cp5.addBang("loadSelUrl")
                 .setPosition(width-50, height-50)
                 .setSize(25, 25)
                 .setLabel("Reload")
-                .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,50));
+                .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,0));
         launchBang = cp5.addBang("launchApp")
                 .setPosition(width-50, 25)
                 .setSize(25, 25)
                 .setLabel("Launch")
-                .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,50));
+                .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,0));
+
+        rectMode(CORNERS);
     }
     /*public void controlEvent(CallbackEvent call) {
         if (call.getController().equals(urlText)) {
@@ -66,10 +69,22 @@ public class Launcher extends PApplet {
     public void draw() {
         background(color(0,0,95));
         syncVars();
-        fill(0);
-        ellipse(mouseX,mouseY,50,50);
-        if(displayImage != null) image(displayImage,0,0,100,100);
+        fill(color(0,0,100));
+        stroke(color(0));
+        rect(25,75,width-25,height-75);
+        if(displayImage != null) {
+            if (frameWidth >= frameHeight) {
+                image(displayImage, 0, 0, 100, 100);
+            }
+            else {
+                image(displayImage, 0, 0, 100, 100);
+            }
+        }
         if(!urlText.isUserInteraction()) urlText.setUserInteraction(true);
+    }
+
+    public void launchApp() {
+        SketchClass.main(args,displayImage);
     }
 
     public void loadSelUrl() {
@@ -79,6 +94,10 @@ public class Launcher extends PApplet {
     public void syncVars() {
         if (widthText.getText().length() > 4) {
             widthText.setText(widthText.getText().substring(0,4));
+        }
+        if (widthText.getText().length() > 0 && heightText.getText().length() > 0 ) {
+            frameWidth = Integer.valueOf(widthText.getText());
+            frameHeight = Integer.valueOf(heightText.getText());
         }
         if (heightText.getText().length() > 4) {
             heightText.setText(heightText.getText().substring(0,4));

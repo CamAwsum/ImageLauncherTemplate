@@ -1,23 +1,27 @@
 import processing.core.PApplet;
 import controlP5.*;
+import processing.core.PImage;
 
 // Commented by Camden Hobson. @CamdenHobson on Twitter.
-public class PAppletMain extends PApplet {
+public class SketchClass extends PApplet {
     // this line initializes a PApplet variable, essential if you create more classes.
     public static PApplet mainSketch;
 
     // this is the section of code that gets run when you run the program.
+
+    static PImage imgToEdit = null;
     public static void main(String [] args) {
-        // this line makes the program run the sketch with the settings in "PAppletMain" - this class.
-        PApplet.main("PAppletMain", args);
+        PApplet.main("SketchClass", args);
+    }
+    public static void main(String [] args,  PImage tImg) {
+        PApplet.main("SketchClass", args);
+        imgToEdit = tImg;
     }
 
     // this is run before anything else in the sketch window. Anything here that deals with the program once it's running will crash the code.
     public void settings() {
         mainSketch = this;
-
-        size(1000,1080);
-        fullScreen();
+        size(LauncherClass.frameWidth,LauncherClass.frameHeight);
     }
     // this code segment is where the variables used in this program are initialized.  The controllers are organized in the same way as the values I link them too, but this is not necessary.
     ControlP5 cp5;
@@ -219,7 +223,8 @@ public class PAppletMain extends PApplet {
         else {
             // this section closes the program if 'q' is pressed.
             if (key == 'q') {
-                exit();
+                dispose();
+                this.getSurface().setVisible(false);
             }
         }
     }

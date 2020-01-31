@@ -73,12 +73,13 @@ public class LauncherClass extends PApplet {
         stroke(color(0));
         rect(25,75,width-25,height-75);
         if(displayImage != null) {
-            if (frameWidth >= frameHeight) {
-                image(displayImage, 0, 0, 100, 100);
-            }
-            else {
-                image(displayImage, 0, 0, 100, 100);
-            }
+            //if (frameWidth/(width-50) > frameHeight/(height-150)) {
+                println(frameWidth/(50-width)*frameHeight);
+                image(displayImage,25,(float)height/2-frameHeight/(height-150),width-50,(float)frameWidth/(50-width)*frameHeight);
+            //}
+            //else {
+                //image(displayImage, 0, 0, 100, 100);
+            //}
         }
         if(!urlText.isUserInteraction()) urlText.setUserInteraction(true);
     }

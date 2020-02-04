@@ -46,6 +46,7 @@ public class LauncherClass extends PApplet {
         urlText = cp5.addTextfield("Url")
                 .setPosition(25,height-50)
                 .setSize(650, 25)
+                .setText("https://w9j4x8b4.stackpathcdn.com/wp-content/uploads/sites/21/2019/07/cropped-gamefulLogoColor-1.png")
                 .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,0));
         urlBang = cp5.addBang("loadSelUrl")
                 .setPosition(width-50, height-50)
@@ -71,15 +72,20 @@ public class LauncherClass extends PApplet {
         syncVars();
         fill(color(0,0,100));
         stroke(color(0));
+        // rect width is width-50, rect height is height-150
         rect(25,75,width-25,height-75);
         if(displayImage != null) {
-            //if (frameWidth/(width-50) > frameHeight/(height-150)) {
-                println(frameWidth/(50-width)*frameHeight);
-                image(displayImage,25,(float)height/2-frameHeight/(height-150),width-50,(float)frameWidth/(50-width)*frameHeight);
-            //}
-            //else {
-                //image(displayImage, 0, 0, 100, 100);
-            //}
+            // frameHeight/frameWidth (height-150)/(width-50)
+            int highRat = frameHeight / (height - 150);
+            int widRat = frameWidth / (width - 50);
+            if ( highRat > widRat) {
+                println("high: " + ((width-(frameWidth/highRat))/2) + " " + 75 + " " + (frameWidth*highRat-150) + " " +(height-150));
+                image(displayImage, (width-(frameWidth*highRat-150))/2, 75, (frameWidth*highRat-150),height-150);
+            }
+            else {
+                println("wid: " +25 + " " + (height/2-frameHeight*widRat) + " " + (width-25) + " " + 100);
+                image(displayImage, 25, height/2-frameHeight*widRat, width-50, 100);
+            }
         }
         if(!urlText.isUserInteraction()) urlText.setUserInteraction(true);
     }

@@ -21,7 +21,7 @@ public class SketchClass extends PApplet {
     // this is run before anything else in the sketch window. Anything here that deals with the program once it's running will crash the code.
     public void settings() {
         mainSketch = this;
-        size(LauncherClass.frameWidth,LauncherClass.frameHeight);
+        size(LauncherClass.imgWidth,LauncherClass.imgHeight);
     }
     // this code segment is where the variables used in this program are initialized.  The controllers are organized in the same way as the values I link them too, but this is not necessary.
     ControlP5 cp5;

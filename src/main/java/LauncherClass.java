@@ -10,7 +10,7 @@ import java.io.IOException;
 public class LauncherClass extends PApplet {
     public static PApplet launcherSketch;
 
-    public static int frameWidth = 100, frameHeight = 100;
+    public static int imgWidth = 100, imgHeight = 100;
     public static void main(String [] args) {
         PApplet.main("LauncherClass", args);
     }
@@ -28,20 +28,24 @@ public class LauncherClass extends PApplet {
 
     String clipUrl;
     PImage displayImage = null;
+    float widDisplay, highDisplay;
 
     public void setup() {
         colorMode(HSB,360,100,100,100);
         cp5 = new ControlP5(this);
-
+        widDisplay = width-50;
+        highDisplay = height-150;
         widthText = cp5.addTextfield("Width")
                 .setPosition(25,25)
                 .setSize(50, 25)
                 .setInputFilter(1)
+                .setText("500")
                 .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,0));
         heightText = cp5.addTextfield("Height")
                 .setPosition(100,25)
                 .setSize(50, 25)
                 .setInputFilter(1)
+                .setText("500")
                 .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,0));
         urlText = cp5.addTextfield("Url")
                 .setPosition(25,height-50)
@@ -76,16 +80,28 @@ public class LauncherClass extends PApplet {
         rect(25,75,width-25,height-75);
         if(displayImage != null) {
             // frameHeight/frameWidth (height-150)/(width-50)
-            int highRat = frameHeight / (height - 150);
-            int widRat = frameWidth / (width - 50);
-            if ( highRat > widRat) {
-                println("high: " + ((width-(frameWidth/highRat))/2) + " " + 75 + " " + (frameWidth*highRat-150) + " " +(height-150));
+
+            float highRat = ((float) imgHeight / highDisplay);
+            float widRat = ((float) imgWidth / widDisplay);
+            if (highRat >= widRat) {
+                image(displayImage, (width-imgWidth*highRat)/2,150,imgWidth*highRat,highDisplay);
+            }
+            else {
+                image(displayImage, 25,150+highDisplay/2-imgHeight*widRat/2,widDisplay,imgHeight*widRat);
+            }
+            println("imgHeight: " + imgHeight + " imgWidth: " + imgWidth);
+            println("highDisplay: " + highDisplay + " widDisplay: " + widDisplay);
+            println("highRat: " + highRat + " widRat: " + widRat);
+            println();
+            /*if ( highRat > widRat) {
+                println("high: " + ((width-(frameWidth/highRat))/2) + " " + 75 + " " + (frameWidth*highRat-150) + " " + (height-150));
                 image(displayImage, (width-(frameWidth*highRat-150))/2, 75, (frameWidth*highRat-150),height-150);
             }
             else {
-                println("wid: " +25 + " " + (height/2-frameHeight*widRat) + " " + (width-25) + " " + 100);
-                image(displayImage, 25, height/2-frameHeight*widRat, width-50, 100);
+                println("wid: " +25 + " " + (height/2-frameHeight*widRat) + " " + (width-50) + " " + frameHeight*widRat);
+                image(displayImage, 25, (height-(frameHeight*widRat-50))/2, width-50, frameHeight*widRat-50);
             }
+            println("high: " + highRat + " wid: " + widRat);*/
         }
         if(!urlText.isUserInteraction()) urlText.setUserInteraction(true);
     }
@@ -103,8 +119,8 @@ public class LauncherClass extends PApplet {
             widthText.setText(widthText.getText().substring(0,4));
         }
         if (widthText.getText().length() > 0 && heightText.getText().length() > 0 ) {
-            frameWidth = Integer.valueOf(widthText.getText());
-            frameHeight = Integer.valueOf(heightText.getText());
+            imgWidth = Integer.valueOf(widthText.getText());
+            imgHeight = Integer.valueOf(heightText.getText());
         }
         if (heightText.getText().length() > 4) {
             heightText.setText(heightText.getText().substring(0,4));

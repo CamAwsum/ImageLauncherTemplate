@@ -7,6 +7,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
+// Created by Camden Hobson. @CamdenHobson on Twitter.
 public class LauncherClass extends PApplet {
     public static PApplet launcherSketch;
 
@@ -84,15 +85,11 @@ public class LauncherClass extends PApplet {
             float highRat = ((float) imgHeight / highDisplay);
             float widRat = ((float) imgWidth / widDisplay);
             if (highRat >= widRat) {
-                image(displayImage, (width-imgWidth*highRat)/2,150,imgWidth*highRat,highDisplay);
+                image(displayImage, (float) 1/2*(width-imgWidth/highRat),(float) 1/2*(height-imgHeight/highRat),imgWidth/highRat,imgHeight/highRat);
             }
             else {
-                image(displayImage, 25,150+highDisplay/2-imgHeight*widRat/2,widDisplay,imgHeight*widRat);
+                image(displayImage, (float) 1/2*(width-imgWidth/widRat),(float) 1/2*(height-imgHeight/widRat),imgWidth/widRat,imgHeight/widRat);
             }
-            println("imgHeight: " + imgHeight + " imgWidth: " + imgWidth);
-            println("highDisplay: " + highDisplay + " widDisplay: " + widDisplay);
-            println("highRat: " + highRat + " widRat: " + widRat);
-            println();
             /*if ( highRat > widRat) {
                 println("high: " + ((width-(frameWidth/highRat))/2) + " " + 75 + " " + (frameWidth*highRat-150) + " " + (height-150));
                 image(displayImage, (width-(frameWidth*highRat-150))/2, 75, (frameWidth*highRat-150),height-150);

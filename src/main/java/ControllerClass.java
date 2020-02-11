@@ -1,33 +1,39 @@
 import processing.core.PApplet;
 import controlP5.*;
-import processing.core.PImage;
+
+import java.awt.*;
 
 // Created by Camden Hobson. @CamdenHobson on Twitter.
 public class ControllerClass extends PApplet {
-    public static PApplet mainSketch;
+    public static PApplet controllerSketch;
+
+    public static PApplet toControl;
 
 
     public static void main(String [] args) {
         PApplet.main("ControllerClass", args);
     }
+    public static void main(String [] args, PApplet tToControl) {
+        PApplet.main("ControllerClass", args);
+        toControl = tToControl;
+    }
 
     public void settings() {
-        mainSketch = this;
-        size(300,350);
+        controllerSketch = this;
+        size(300,325);
     }
     ControlP5 cp5;
     Slider    slider1, slider2, slider3, slider4,
             sliderH, sliderS, sliderB, sliderA;
-    float     valueS1, valueS2, valueS3, valueS4,
+    static float     valueS1, valueS2, valueS3, valueS4,
             valueSH, valueSS, valueSB, valueSA;
+    static int fillColor;
     Bang      bang1,   bang2;
-    boolean   valueB1 = true, valueB2 = true;
+    static boolean   valueB1 = true, valueB2 = true;
     Textfield text1;
-    String    valueT1;
+    static String    valueT1;
 
     int controllerWidth, controllerHeight;
-    boolean guiOn = true;
-    String [] saveNum;
 
     // this creates an array that holds every controller used in the program. This isn't automatically completed, it has to be done by hand.
     Controller [] controllers = new Controller[]{slider1,slider2,slider3,slider4,
@@ -59,18 +65,20 @@ public class ControllerClass extends PApplet {
                  * Active is the color of the value segment when the mouse is over the slider, Foreground is the color of the value segment when the mouse isn't over it
                  * Background is self explanatory, and Label is the color of the text denoting the sliders name                                                          */
                 .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,100));
-        slider1.getCaptionLabel().align(ControlP5.BOTTOM_OUTSIDE, 25);
+        slider1.getCaptionLabel().align(ControlP5.BOTTOM_OUTSIDE, ControlP5.BOTTOM_OUTSIDE);
         slider2 = cp5.addSlider("slider2")
                 .setMin(0).setMax(1)
                 // each slider underneath's position is based on the position above it.
-                .setPosition(controllerHeight, floor((float) (slider1.getPosition()[1]+ controllerHeight *2)))
+                .setPosition(controllerHeight, floor(slider1.getPosition()[1]+ controllerHeight *2))
                 .setSize(controllerWidth, controllerHeight)
                 .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,100));
+        slider2.getCaptionLabel().align(ControlP5.BOTTOM_OUTSIDE, ControlP5.BOTTOM_OUTSIDE);
         slider3 = cp5.addSlider("slider3")
                 .setMin(0).setMax(1)
-                .setPosition(controllerHeight, floor((float) (slider2.getPosition()[1]+ controllerHeight *2)))
+                .setPosition(controllerHeight, floor(slider2.getPosition()[1]+ controllerHeight *2))
                 .setSize(controllerWidth, controllerHeight)
                 .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,100));
+        slider3.getCaptionLabel().align(ControlP5.BOTTOM_OUTSIDE, ControlP5.BOTTOM_OUTSIDE);
 
         // this code segment creates four sliders that act as a color picker.
         sliderH = cp5.addSlider("Hue")
@@ -95,7 +103,7 @@ public class ControllerClass extends PApplet {
         sliderA = cp5.addSlider("Alpha")
                 .setMin(0).setMax(100)
                 .setPosition(controllerHeight, floor(sliderB.getPosition()[1] + sliderB.getHeight()))
-                .setSize(floor((controllerWidth)*3/4),floor(controllerHeight *3/4))
+                .setSize(floor((controllerWidth)*3/4),floor(controllerHeight *3/4)+1)
                 .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,100))
                 .setValue(100);
 
@@ -120,47 +128,30 @@ public class ControllerClass extends PApplet {
                 .setPosition(controllerHeight,height- controllerHeight *2)
                 .setSize(controllerWidth, controllerHeight)
                 .setColorActive(color(0,0,30)).setColorForeground(color(0,0,20)).setColorBackground(color(0,0,10)).setColorLabel(color(0,0,100));
-
-        saveNum = loadStrings("data/saveNum.txt");
-        if (saveNum == null) {
-            println("Creating new saveNum file...");
-            saveStrings("data/saveNum.txt", new String[]{"0"});
-        }
-        else {
-            println("SaveNum = " + saveNum[0]);
-        }
+        rectMode(CORNERS);
     }
 
     // the code in this function is called every frame by the sketch.  This is essentially the main function of the program, although it may have the least amount of code.
     public void draw () {
         // this line creates a background for the app which essentially "clears" the app each frame, so it starts fresh again.
-        background(color(0,0,95));
+        background(color(0,0,75));
         // this line calls the syncVars() function.
-        syncVars();
-        // this segment checks if the guiOn boolean is true, and if it is, displays some bits.
-        if (guiOn) {
-            // this line makes it so that instead of rect() using the parameters (x1,y1,w1,h1), it takes (x1,y1,x2,y2).
-            rectMode(CORNERS);
-            // this segment turns off the stroke for any rendered shapes, and then creates a semi-transparent box across the screen.
-            noStroke();
-            fill(0,0,0,40);
-            rect(0,0,width,height);
-            // this segment creates a preview for the color selected with the four color picker sliders.
-            fill(color(valueSH,valueSS,valueSB));
-            rect(sliderH.getPosition()[0]+sliderH.getWidth()+ controllerHeight *2,
-                    sliderH.getPosition()[1],
-                    floor((float) (sliderH.getPosition()[0]+sliderH.getWidth()*1.1+ controllerHeight *2)),
-                    sliderA.getPosition()[1]+sliderA.getHeight());
-        }
+         syncVars();
+         noStroke();
+         fill(0,0,0,40);
+         rect(0,0,width,height);
+         // this segment creates a preview for the color selected with the four color picker sliders.
+        fill(fillColor);
+        rect(sliderH.getPosition()[0]+sliderH.getWidth()+ controllerHeight *2,
+                sliderH.getPosition()[1],
+                floor((float) (sliderH.getPosition()[0]+sliderH.getWidth()*1.1+ controllerHeight *2)),
+                sliderA.getPosition()[1]+sliderA.getHeight()+1);
+
         // this is a fragment I need to delete
         line(0,height/2,width,height/2);
         line(width/2,0,width/2,height);
     }
-    // this function is a placeholder for whatever displaying of the art you would do while the program runs.
-    public void display() {
 
-    }
-    // this function links all variables' values to the sliders they're represented by.
     public void syncVars () {
         valueS1 = slider1.getValue();
         valueS2 = slider2.getValue();
@@ -174,6 +165,8 @@ public class ControllerClass extends PApplet {
         sliderH.setColorActive(color(valueSH,100,100)).setColorForeground(color(valueSH,100,90)).setColorBackground(color(valueSH,100,80));
         sliderS.setColorActive(color(valueSH,valueSS,100)).setColorForeground(color(valueSH,valueSS,90)).setColorBackground(color(valueSH,valueSS,80));
         sliderB.setColorActive(color(valueSH,100,(float)(valueSB*.8+20))).setColorForeground(color(valueSH,100,(float)(valueSB*.8+10))).setColorBackground(color(valueSH,100,(float)(valueSB*.8)));
+
+        fillColor = color(valueSH, valueSS, valueSB, valueSA);
     }
 
     // when the bang1 bang is used, this function will call.
@@ -190,26 +183,7 @@ public class ControllerClass extends PApplet {
     public void keyPressed() {
         // this line checks to see if the key is a "coded" key- basically anything that isn't a letter or a space.
         if (key == CODED) {
-            if (keyCode == UP) {
-                beginRecord(PDF,"data/output/template_"+saveNum[0]+".pdf");
-                colorMode(HSB,360,100,100);
 
-                rect(0,0,10,10);
-                endRecord();
-                println("saveNum before:" + saveNum[0]);
-                saveNum[0] = Integer.toString(parseInt(saveNum[0])+1);
-                saveStrings("data/saveNum.txt", saveNum);
-                println("saveNum after:" + saveNum[0]);
-            }
-            if (keyCode == LEFT) {
-                guiOn ^= true;
-                if (guiOn) {
-                    cp5.setVisible(true);
-                }
-                else {
-                    cp5.setVisible(false);
-                }
-            }
         }
         // this section is for any key that isn't a "code" key.
         else {

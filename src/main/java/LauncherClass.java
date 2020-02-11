@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 // Created by Camden Hobson. @CamdenHobson on Twitter.
 public class LauncherClass extends PApplet {
@@ -90,21 +91,15 @@ public class LauncherClass extends PApplet {
             else {
                 image(displayImage, (float) 1/2*(width-imgWidth/widRat),(float) 1/2*(height-imgHeight/widRat),imgWidth/widRat,imgHeight/widRat);
             }
-            /*if ( highRat > widRat) {
-                println("high: " + ((width-(frameWidth/highRat))/2) + " " + 75 + " " + (frameWidth*highRat-150) + " " + (height-150));
-                image(displayImage, (width-(frameWidth*highRat-150))/2, 75, (frameWidth*highRat-150),height-150);
-            }
-            else {
-                println("wid: " +25 + " " + (height/2-frameHeight*widRat) + " " + (width-50) + " " + frameHeight*widRat);
-                image(displayImage, 25, (height-(frameHeight*widRat-50))/2, width-50, frameHeight*widRat-50);
-            }
-            println("high: " + highRat + " wid: " + widRat);*/
         }
         if(!urlText.isUserInteraction()) urlText.setUserInteraction(true);
     }
-
+    SketchClass appSketch;
     public void launchApp() {
-        SketchClass.main(args,displayImage);
+        appSketch = new SketchClass();
+        appSketch.appWid = imgWidth;
+        appSketch.appHi = imgHeight;
+        appSketch.main(args,displayImage);
     }
 
     public void loadSelUrl() {

@@ -26,7 +26,7 @@ public class LauncherClass extends PApplet {
     Bang launchBang, urlBang;
 
     Controller [] controllers = new Controller[]{heightText,widthText,urlText,
-                                                 launchBang,urlBang};
+            launchBang,urlBang};
 
     String clipUrl;
     PImage displayImage = null;
@@ -96,10 +96,12 @@ public class LauncherClass extends PApplet {
     }
     SketchClass appSketch;
     public void launchApp() {
-        appSketch = new SketchClass();
-        appSketch.appWid = imgWidth;
-        appSketch.appHi = imgHeight;
-        appSketch.main(args,displayImage);
+        if (displayImage != null) {
+            appSketch = new SketchClass();
+            SketchClass.appWid = imgWidth;
+            SketchClass.appHi = imgHeight;
+            SketchClass.main(args, displayImage);
+        }
     }
 
     public void loadSelUrl() {
